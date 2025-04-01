@@ -9,8 +9,17 @@ EditorBuildSettings:
     path: Assets/Scenes/Menu.unity
     guid: 270df4e372bd07f408154e97b16f94b7
   - enabled: 1
+    path: Assets/Scenes/DiffSelect.unity
+    guid: 1649ea575e136a6479b146d292c20b55
+  - enabled: 1
+    path: Assets/Scenes/Easy.unity
+    guid: 418885c75fbe8ab46a147ea944bcaa74
+  - enabled: 1
     path: Assets/Scenes/SampleScene.unity
     guid: 8c9cfa26abfee488c85f1582747f6a02
+  - enabled: 1
+    path: Assets/Scenes/Hard.unity
+    guid: 5b3563035381db54b8869c89641f9662
   - enabled: 1
     path: Assets/Scenes/Lose.unity
     guid: 6a477aa8e73108545bf055ca61c6d2c7

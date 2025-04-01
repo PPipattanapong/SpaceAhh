@@ -4,6 +4,8 @@ using System.Collections;
 public class RangedEnemy : MonoBehaviour
 {
     public GameObject bulletPrefab;      // Bullet prefab to shoot
+    public GameObject item1Prefab;       // Prefab ของไอเทมที่ 1
+    public GameObject item2Prefab;       // Prefab ของไอเทมที่ 2
     public float shootingRange = 3f;     // ลดระยะการยิงให้ใกล้ขึ้น
     public float speed = 3f;             // เพิ่มความเร็วของศัตรู
     public float fireRate = 2f;          // ความถี่ที่ศัตรูยิง (2 วินาที)
@@ -18,7 +20,11 @@ public class RangedEnemy : MonoBehaviour
     private Color originalColor;         // Store the original color of the enemy
 
     private BaseTower2D baseTower;       // Reference to the BaseTower2D component
-    private BaseTower2D player;               // Reference to the player for damage
+    private BaseTower2D player;          // Reference to the player for damage
+
+    // การกำหนดโอกาสดรอปไอเทม
+    public float item1DropChance = 0.4f; // โอกาสดรอปไอเทมที่ 1 (40%)
+    public float item2DropChance = 0.2f; // โอกาสดรอปไอเทมที่ 2 (20%)
 
     void Start()
     {
@@ -138,10 +144,32 @@ public class RangedEnemy : MonoBehaviour
         if (scoreManager != null)
         {
             scoreManager.AddScore(20);  // เพิ่ม 20 คะแนนสำหรับ RangedEnemy
+            Debug.Log("RangedEnemy destroyed. Score added: 20");  // เพิ่มบรรทัดนี้เพื่อการตรวจสอบ
         }
+
+        // Randomly drop items
+        DropItems();
 
         // ทำลายศัตรู
         Destroy(gameObject);
+    }
+
+    // ฟังก์ชันสำหรับการดรอปไอเทม
+    void DropItems()
+    {
+        float dropChance = Random.value; // Generate a random value between 0 and 1
+
+        // ตรวจสอบว่าโอกาสสุ่มดรอปไอเทมที่ 1 หรือ 2
+        if (dropChance <= item1DropChance)
+        {
+            Instantiate(item1Prefab, transform.position, Quaternion.identity); // ดรอปไอเทมที่ 1
+            Debug.Log("Item 1 dropped!");
+        }
+        else if (dropChance <= item1DropChance + item2DropChance)
+        {
+            Instantiate(item2Prefab, transform.position, Quaternion.identity); // ดรอปไอเทมที่ 2
+            Debug.Log("Item 2 dropped!");
+        }
     }
 
     // Detect collision with the bullet

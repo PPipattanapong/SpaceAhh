@@ -3,6 +3,12 @@ using System.Collections;
 
 public class Enemy : MonoBehaviour
 {
+    public GameObject item1Prefab;  // Prefab ของไอเทมที่ 1
+    public GameObject item2Prefab;  // Prefab ของไอเทมที่ 2
+
+    public float item1DropChance = 0.4f; // โอกาสที่จะดรอปไอเทมที่ 1 (40%)
+    public float item2DropChance = 0.2f; // โอกาสที่จะดรอปไอเทมที่ 2 (20%)
+
     public float speed = 2f;            // Movement speed of the enemy
     public float dashSpeed = 10f;       // Speed during the dash attack
     public int damage = 5;              // Damage to the tower (normal attack)
@@ -27,6 +33,8 @@ public class Enemy : MonoBehaviour
     private int currentHealth;           // Current health of the enemy
 
     private SpriteRenderer spriteRenderer;  // Reference to the sprite renderer to change color
+
+    private bool isDead = false; // ตัวแปรเพื่อเช็คว่า Enemy ตายแล้วหรือยัง
 
     void Start()
     {
@@ -141,6 +149,8 @@ public class Enemy : MonoBehaviour
     // Method to handle damage from TowerBullet
     public void TakeDamage(int damageAmount)
     {
+        if (isDead) return; // ถ้า Enemy ตายแล้วไม่ให้รับความเสียหายอีก
+
         currentHealth -= damageAmount;  // Subtract the damage
 
         // Change color to red when damaged and then back to the original color
@@ -171,18 +181,44 @@ public class Enemy : MonoBehaviour
         spriteRenderer.color = originalColor;
     }
 
+    // เพิ่มการดรอปไอเทมเมื่อศัตรูตาย
     public void Die()
     {
+        if (isDead) return; // ถ้า Enemy ตายแล้วไม่ให้ทำลายซ้ำ
+
+        // Mark as dead
+        isDead = true;
+
         // เพิ่มคะแนนเมื่อศัตรูถูกทำลาย
         ScoreManager scoreManager = FindObjectOfType<ScoreManager>();
         if (scoreManager != null)
         {
             scoreManager.AddScore(10);  // เพิ่ม 10 คะแนนสำหรับศัตรูทั่วไป
+            Debug.Log("Enemy destroyed. Score added: 10");  // เพิ่มบรรทัดนี้เพื่อการตรวจสอบ
         }
+
+        // Randomly drop items
+        DropItems();
 
         // ทำลายศัตรู
         Destroy(gameObject);
     }
 
+    // ฟังก์ชันสำหรับการดรอปไอเทม
+    void DropItems()
+    {
+        float dropChance = Random.value; // Generate a random value between 0 and 1
 
+        // ตรวจสอบว่าโอกาสสุ่มดรอปไอเทมที่ 1 หรือ 2
+        if (dropChance <= item1DropChance)
+        {
+            Instantiate(item1Prefab, transform.position, Quaternion.identity); // ดรอปไอเทมที่ 1
+            Debug.Log("Item 1 dropped!");
+        }
+        else if (dropChance <= item1DropChance + item2DropChance)
+        {
+            Instantiate(item2Prefab, transform.position, Quaternion.identity); // ดรอปไอเทมที่ 2
+            Debug.Log("Item 2 dropped!");
+        }
+    }
 }
