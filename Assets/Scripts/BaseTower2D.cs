@@ -57,6 +57,13 @@ public class BaseTower2D : MonoBehaviour
 
     void Update()
     {
+
+        if (Input.GetKeyDown(KeyCode.R))
+        {
+            TakeDamage(20);
+        }
+
+
         // ตรวจสอบการกดปุ่ม WASD เพื่อเคลื่อนที่
         movement.x = Input.GetAxisRaw("Horizontal");
         movement.y = Input.GetAxisRaw("Vertical");

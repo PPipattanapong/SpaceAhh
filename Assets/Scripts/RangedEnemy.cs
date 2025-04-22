@@ -151,7 +151,8 @@ public class RangedEnemy : MonoBehaviour
         DropItems();
 
         // ทำลายศัตรู
-        Destroy(gameObject);
+        // ในสคริปต์อื่นเมื่อต้องการทำลาย GameObject
+        GetComponent<DestroyWithAnimation>().DestroyObject();
     }
 
     // ฟังก์ชันสำหรับการดรอปไอเทม
@@ -195,7 +196,8 @@ public class RangedEnemy : MonoBehaviour
             player.TakeDamage(15);
 
             // ทำลายตัวเอง
-            Destroy(gameObject);
+            // ในสคริปต์อื่นเมื่อต้องการทำลาย GameObject
+            GetComponent<DestroyWithAnimation>().DestroyObject();
         }
     }
 }
